@@ -19,12 +19,12 @@ namespace MebFinalApp.WebCoreUI.Areas.Admin.Controllers
 
 
         IUserBs userBs;
-        IValidator<UserLoginViewModel> loginViewModelValidator;
+        //IValidator<UserLoginViewModel> loginViewModelValidator;
         ISessionManager sessionManager;
         public UserController(IUserBs _userBs, IValidator<UserLoginViewModel> _loginViewModelValidator, ISessionManager _sessionManager)
         {
             userBs = _userBs;
-            loginViewModelValidator = _loginViewModelValidator;
+            //loginViewModelValidator = _loginViewModelValidator;
             sessionManager= _sessionManager;
         }
         public IActionResult Login()
@@ -41,24 +41,24 @@ namespace MebFinalApp.WebCoreUI.Areas.Admin.Controllers
             ///*  ModelState.AddModelError("Nouser", "Lütfen olmayan bir kullanıcı girin"); // Server side bir algoritm*/a ile kendi validation errroumu oluşturabilirim.
 
 
-            ValidationResult result = loginViewModelValidator.Validate(vm);
+            //ValidationResult result = loginViewModelValidator.Validate(vm);
 
-            if (result.IsValid == false)
-            {
-                
-
+            //if (result.IsValid == false)
+            //{
 
 
-                return View(vm);
-            }
-            else
-            {
-                User user = userBs.Get(x => x.UserName == vm.UserName && x.Password == vm.Password);
 
-                sessionManager.AktifKullanici = user;
 
-                return View(vm);
-            }
+            //    return View(vm);
+            //}
+            //else
+            //{
+            //    User user = userBs.Get(x => x.UserName == vm.UserName && x.Password == vm.Password);
+
+            //    sessionManager.AktifKullanici = user;
+
+            //    return View(vm);
+            //}
 
             //HttpContext.Session.SetString("AktifKullanici", "Ahmet");
             //string value = HttpContext.Session.GetString("AktifKullanici");
@@ -71,10 +71,16 @@ namespace MebFinalApp.WebCoreUI.Areas.Admin.Controllers
 
             //User user=   HttpContext.Session.GetObject<User>("AktifKullanici");
 
-          
-           //User user= sessionManager.AktifKullanici;
 
+            //User user= sessionManager.AktifKullanici;
 
+            if (!ModelState.IsValid)
+            {
+
+                return View(vm);
+            }
+
+            return View(vm);
         }
     }
 }

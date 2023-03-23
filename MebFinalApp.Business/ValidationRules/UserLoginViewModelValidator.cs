@@ -20,7 +20,7 @@ namespace MebFinalApp.Business.ValidationRules
         {
             userBs = _userBs;
 
-            //RuleFor(x => x.UserName).NotEmpty().WithMessage("Lütfen Boş Bırakmayınız").MaximumLength(10).WithMessage("Lütfen 10 karakterden az giriniz");
+            RuleFor(x => x.UserName).NotEmpty().WithMessage("Lütfen Boş Bırakmayınız").MaximumLength(10).WithMessage("Lütfen 10 karakterden az giriniz");
 
             //RuleFor(x => x.UserName).Must(KullaniciAdiKontrol).WithMessage("Bu Kullanıcı Adı Kullanılıyor");
 
