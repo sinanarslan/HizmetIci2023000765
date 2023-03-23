@@ -18,6 +18,8 @@ namespace MebFinalApp.Data.Concrete.Entityframework.context
         public virtual DbSet<Faturalar> Faturalars { get; set; } = null!;
         public virtual DbSet<HerUcAylikSatislar> HerUcAylikSatislars { get; set; } = null!;
         public virtual DbSet<Kategoriler> Kategorilers { get; set; } = null!;
+
+        public virtual DbSet<User> Kullanicilar { get; set; } = null!;
         public virtual DbSet<KategorilereGore1997YiliSatislari> KategorilereGore1997YiliSatislaris { get; set; } = null!;
         public virtual DbSet<KategorilereGoreSatislar> KategorilereGoreSatislars { get; set; } = null!;
         public virtual DbSet<KategorilereGoreUrunler> KategorilereGoreUrunlers { get; set; } = null!;
