@@ -1,7 +1,9 @@
+using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MebFinalApp.Business.Abstract;
 using MebFinalApp.Business.Concrete;
+using MebFinalApp.Business.MappingRules;
 using MebFinalApp.Business.ValidationRules;
 using MebFinalApp.Data.Abstract;
 using MebFinalApp.Data.Concrete.Entityframework.repository;
@@ -26,12 +28,33 @@ namespace MebFinalApp.WebCoreUI
 
             builder.Services.AddSingleton<IUserBs, UserBs>();
             builder.Services.AddSingleton<IUserRepository, EfUserRespoitory>();
+
+
+            builder.Services.AddSingleton<IUrunBs, UrunBs>();
+            builder.Services.AddSingleton<IUrunRepository, EfUrunRepository>();
+
+
+
+            // SESSION ÝÞLEMLERÝ ÝÇÝN
             builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
             builder.Services.AddSingleton<ISessionManager, SessionManager>();
 
-            builder.Services.AddSingleton<IValidator<UserLoginViewModel>, UserLoginViewModelValidator>();
-         
 
+
+            builder.Services.AddSingleton<IValidator<UserLoginViewModel>, UserLoginViewModelValidator>();
+
+
+
+
+            // AUTOMAPPER ÝÞLEMÝ ÝÇÝN
+            var mappingconfig = new MapperConfiguration(
+
+                 mc => {
+                     mc.AddProfile(new MappingProfile());
+
+            });
+
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 
             var app = builder.Build();
@@ -50,6 +73,7 @@ namespace MebFinalApp.WebCoreUI
 
             app.UseEndpoints(endpoints =>
             {
+
                 endpoints.MapControllerRoute(
                   name: "areas",
                   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"

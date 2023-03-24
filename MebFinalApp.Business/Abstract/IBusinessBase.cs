@@ -16,6 +16,8 @@ namespace MebFinalApp.Business.Abstract
 
         //TEntity GetById(int Id, params string[] includelist);
 
+
+
         TEntity Insert(TEntity entity);
         TEntity Update(TEntity entity);
         TEntity Delete(TEntity entity);

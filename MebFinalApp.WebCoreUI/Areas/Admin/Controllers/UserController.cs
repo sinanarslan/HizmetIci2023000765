@@ -1,7 +1,9 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using FluentValidation.Results;
 using MebFinalApp.Business.Abstract;
 using MebFinalApp.Business.Concrete;
+using MebFinalApp.Business.MappingRules;
 using MebFinalApp.Model.Entity;
 using MebFinalApp.Model.ViewModel.Admin;
 using MebFinalApp.WebCoreUI.Areas.Admin.Extensions;
@@ -19,13 +21,16 @@ namespace MebFinalApp.WebCoreUI.Areas.Admin.Controllers
 
 
         IUserBs userBs;
-        //IValidator<UserLoginViewModel> loginViewModelValidator;
+        IValidator<UserLoginViewModel> loginViewModelValidator;
         ISessionManager sessionManager;
-        public UserController(IUserBs _userBs, IValidator<UserLoginViewModel> _loginViewModelValidator, ISessionManager _sessionManager)
+        IMapper mapper;
+
+        public UserController(IUserBs _userBs, IValidator<UserLoginViewModel> _loginViewModelValidator, ISessionManager _sessionManager, IMapper _mapper)
         {
             userBs = _userBs;
-            //loginViewModelValidator = _loginViewModelValidator;
-            sessionManager= _sessionManager;
+            loginViewModelValidator = _loginViewModelValidator;
+            sessionManager = _sessionManager;
+            mapper = _mapper;
         }
         public IActionResult Login()
         {
@@ -34,31 +39,40 @@ namespace MebFinalApp.WebCoreUI.Areas.Admin.Controllers
             return View(vm);
         }
 
-        [HttpPost]      
+        [HttpPost]
         public IActionResult Login(UserLoginViewModel vm)
         {
 
             ///*  ModelState.AddModelError("Nouser", "Lütfen olmayan bir kullanıcı girin"); // Server side bir algoritm*/a ile kendi validation errroumu oluşturabilirim.
 
 
+
             //ValidationResult result = loginViewModelValidator.Validate(vm);
 
-            //if (result.IsValid == false)
-            //{
+            if (!ModelState.IsValid)
+            {
+
+         
+
+                return View(vm);
+
+            }
+            else
+            {
+
+                User user = userBs.Get(x => x.UserName == vm.UserName && x.Password == vm.Password);
+
+
+                // Automapper işlemi 
+                UserLoginViewModel model = mapper.Map<UserLoginViewModel>(user); 
 
 
 
 
-            //    return View(vm);
-            //}
-            //else
-            //{
-            //    User user = userBs.Get(x => x.UserName == vm.UserName && x.Password == vm.Password);
+                sessionManager.AktifKullanici = user;
 
-            //    sessionManager.AktifKullanici = user;
-
-            //    return View(vm);
-            //}
+                return RedirectToAction("Index", "Home");
+            }
 
             //HttpContext.Session.SetString("AktifKullanici", "Ahmet");
             //string value = HttpContext.Session.GetString("AktifKullanici");
@@ -74,13 +88,7 @@ namespace MebFinalApp.WebCoreUI.Areas.Admin.Controllers
 
             //User user= sessionManager.AktifKullanici;
 
-            if (!ModelState.IsValid)
-            {
 
-                return View(vm);
-            }
-
-            return View(vm);
         }
     }
 }

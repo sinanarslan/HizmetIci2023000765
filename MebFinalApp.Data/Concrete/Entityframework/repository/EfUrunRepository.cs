@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MebFinalApp.Data.Concrete.Entityframework.repository
 {
-    internal class EfUrunRepository : EfRepositoryBase<Urunler, NorthwindDbContext>, IUrunRepository
+    public class EfUrunRepository : EfRepositoryBase<Urunler, NorthwindDbContext>, IUrunRepository
     {
     }
 }
